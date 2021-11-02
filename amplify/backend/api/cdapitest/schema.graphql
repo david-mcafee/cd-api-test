@@ -1,5 +1,16 @@
-type Todo @model {
+type Class @model {
   id: ID!
   name: String!
-  description: String
+  registrations: RegistrationConnection
+}
+
+type Registration @model {
+  id: ID!
+  name: String
+  major: String
+}
+
+type RegistrationConnection @model {
+  items: [Registration!]
+  nextToken: String
 }
