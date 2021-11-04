@@ -47,6 +47,16 @@ export const listCourses = /* GraphQL */ `
     }
   }
 `;
+
+export const allCourses = /* GraphQL */ `
+  query allCourses($semester: String!) {
+    allCourses(semester: $semester) {
+      id
+      name
+    }
+  }
+`;
+
 export const getRegistration = /* GraphQL */ `
   query GetRegistration($id: ID!) {
     getRegistration(id: $id) {

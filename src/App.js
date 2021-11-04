@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { API, graphqlOperation } from "aws-amplify";
-import { createClass, deleteClass } from "../src/graphql/mutations";
-// I recognized the unfortunate auto-naming of this query...
-import { listClasss } from "./graphql/queries";
+import { createCourse, deleteCourse } from "../src/graphql/mutations";
 import {
   Button,
   Header,
@@ -11,59 +9,69 @@ import {
   List,
   ListItem,
   ListContent,
+  ListDescription,
   ListHeader,
 } from "semantic-ui-react";
 import { useStyles } from "./styles";
 
-const initialClassState = [];
+const initialCourseState = [];
 const initialFormState = { name: "" };
 
 const App = () => {
-  const [classes, setClasses] = useState(initialClassState);
+  const [courses, setCourses] = useState(initialCourseState);
   const [formState, setFormState] = useState(initialFormState);
 
   const { container, parentContainer } = useStyles();
 
   useEffect(() => {
-    fetchClasses();
+    fetchCourses();
   }, []);
 
   function setInput(key, value) {
     setFormState({ ...formState, [key]: value });
   }
 
-  async function fetchClasses() {
+  const allCourses = /* GraphQL */ `
+    query allCourses($semester: String!) {
+      allCourses(semester: $semester) {
+        id
+        name
+      }
+    }
+  `;
+
+  async function fetchCourses() {
     try {
-      const classData = await API.graphql(graphqlOperation(listClasss));
-      const classes = classData?.data?.listClasss?.items;
-      console.log(classData);
-      setClasses(classes);
+      const courses = await API.graphql(
+        graphqlOperation(allCourses, { semester: "SPRING2021" })
+      );
+      setCourses(courses?.data?.allCourses);
     } catch (error) {
-      console.log("error fetching classes", error);
+      console.log("error fetching courses", error);
     }
   }
 
-  // async function to add a class
-  async function addClass() {
+  // async function to add a course
+  async function addCourse() {
     try {
       if (!formState.name) return;
 
       await API.graphql(
-        graphqlOperation(createClass, { input: { name: formState?.name } })
+        graphqlOperation(createCourse, { input: { name: formState?.name } })
       );
     } catch (error) {
-      console.log("error creating a class", error);
+      console.log("error creating a course", error);
     }
   }
 
-  // async function to delete a class
-  async function removeClass(classItem) {
+  // async function to delete a course
+  async function removeCourse(courseItem) {
     try {
       await API.graphql(
-        graphqlOperation(deleteClass, { input: { id: classItem.id } })
+        graphqlOperation(deleteCourse, { input: { id: courseItem.id } })
       );
     } catch (error) {
-      console.log("error deleting a class", error);
+      console.log("error deleting a course", error);
     }
   }
 
@@ -82,19 +90,24 @@ const App = () => {
           value={formState.name}
           placeholder="Name"
         />
-        <Button onClick={addClass}>Create Class</Button>
+        <Button onClick={addCourse}>Create Course</Button>
         <List>
-          {classes.map((classItem) => (
-            <ListItem key={classItem.id}>
+          {courses.map((courseItem) => (
+            <ListItem key={courseItem.id}>
               <ListContent floated="right">
-                <Button onClick={() => removeClass(classItem)} icon circular>
+                <Button onClick={() => removeCourse(courseItem)} icon circular>
                   <Icon name="delete" color="red" />
                 </Button>
               </ListContent>
               <ListContent>
                 <ListHeader>
-                  <p>{classItem.name}</p>
+                  <p>{courseItem.name}</p>
                 </ListHeader>
+              </ListContent>
+              <ListContent>
+                <ListDescription>
+                  <p>{courseItem.id}</p>
+                </ListDescription>
               </ListContent>
             </ListItem>
           ))}
