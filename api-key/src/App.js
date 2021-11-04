@@ -80,6 +80,35 @@ const App = () => {
     }
   }
 
+  const onRegister = /* GraphQL */ `
+    subscription onRegister {
+      onRegister {
+        id
+        registrations {
+          items {
+            id
+            name
+          }
+        }
+      }
+    }
+  `;
+
+  // Subscribe to `register` updates
+  useEffect(() => {
+    const subscription = API.graphql(graphqlOperation(onRegister)).subscribe({
+      next: (registrationData) => {
+        console.log(registrationData);
+        // const todo = todoData?.value?.data?.onCreateTodo;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+
+    return subscription.unsubscribe;
+  }, []);
+
   async function removeCourse(courseItem) {
     try {
       await API.graphql(
