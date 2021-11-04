@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { API, graphqlOperation } from "aws-amplify";
-import { createCourse, deleteCourse } from "../src/graphql/mutations";
+import { deleteCourse } from "../src/graphql/mutations";
 import {
   Button,
   Header,
@@ -36,6 +36,12 @@ const App = () => {
       allCourses(semester: $semester) {
         id
         name
+        registrations {
+          items {
+            id
+            name
+          }
+        }
       }
     }
   `;
@@ -45,26 +51,35 @@ const App = () => {
       const courses = await API.graphql(
         graphqlOperation(allCourses, { semester: "SPRING2021" })
       );
+      console.log(courses);
       setCourses(courses?.data?.allCourses);
     } catch (error) {
       console.log("error fetching courses", error);
     }
   }
 
-  // async function to add a course
-  async function addCourse() {
+  const register = /* GraphQL */ `
+    mutation register($id: ID!, $name: String!) {
+      register(id: $id, name: $name) {
+        id
+        name
+      }
+    }
+  `;
+
+  async function registerForCourse(id) {
     try {
       if (!formState.name) return;
 
-      await API.graphql(
-        graphqlOperation(createCourse, { input: { name: formState?.name } })
+      const result = await API.graphql(
+        graphqlOperation(register, { id: id, name: formState?.name })
       );
+      console.log(result);
     } catch (error) {
-      console.log("error creating a course", error);
+      console.log("error adding registration", error);
     }
   }
 
-  // async function to delete a course
   async function removeCourse(courseItem) {
     try {
       await API.graphql(
@@ -80,7 +95,7 @@ const App = () => {
       <div className={container}>
         <Header as="h1" icon textAlign="center">
           <Icon name="users" circular />
-          <Header.Content>CD API test</Header.Content>
+          <Header.Content>CD test / API key</Header.Content>
           <Header sub>
             Subscriptions not yet implemented, refresh for updates
           </Header>
@@ -88,9 +103,8 @@ const App = () => {
         <Input
           onChange={(event) => setInput("name", event.target.value)}
           value={formState.name}
-          placeholder="Name"
+          placeholder="Enter name to register"
         />
-        <Button onClick={addCourse}>Create Course</Button>
         <List>
           {courses.map((courseItem) => (
             <ListItem key={courseItem.id}>
@@ -108,6 +122,11 @@ const App = () => {
                 <ListDescription>
                   <p>{courseItem.id}</p>
                 </ListDescription>
+              </ListContent>
+              <ListContent>
+                <Button onClick={() => registerForCourse(courseItem?.id)}>
+                  Register
+                </Button>
               </ListContent>
             </ListItem>
           ))}
