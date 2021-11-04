@@ -74,7 +74,8 @@ const App = () => {
       const result = await API.graphql(
         graphqlOperation(register, { id: id, name: formState?.name })
       );
-      console.log(result);
+
+      console.log("API result: ", result);
     } catch (error) {
       console.log("error adding registration", error);
     }
@@ -98,8 +99,7 @@ const App = () => {
   useEffect(() => {
     const subscription = API.graphql(graphqlOperation(onRegister)).subscribe({
       next: (registrationData) => {
-        console.log(registrationData);
-        // const todo = todoData?.value?.data?.onCreateTodo;
+        console.log("Subscription data: ", registrationData);
       },
       error: (error) => {
         console.log(error);
