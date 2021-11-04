@@ -1,9 +1,9 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateClass = /* GraphQL */ `
-  subscription OnCreateClass {
-    onCreateClass {
+export const onCreateCourse = /* GraphQL */ `
+  subscription OnCreateCourse {
+    onCreateCourse {
       id
       name
       registrations {
@@ -24,9 +24,9 @@ export const onCreateClass = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateClass = /* GraphQL */ `
-  subscription OnUpdateClass {
-    onUpdateClass {
+export const onUpdateCourse = /* GraphQL */ `
+  subscription OnUpdateCourse {
+    onUpdateCourse {
       id
       name
       registrations {
@@ -47,9 +47,9 @@ export const onUpdateClass = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteClass = /* GraphQL */ `
-  subscription OnDeleteClass {
-    onDeleteClass {
+export const onDeleteCourse = /* GraphQL */ `
+  subscription OnDeleteCourse {
+    onDeleteCourse {
       id
       name
       registrations {

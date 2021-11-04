@@ -1,4 +1,4 @@
-type Class @model {
+type Course @model {
   id: ID!
   name: String!
   registrations: RegistrationConnection

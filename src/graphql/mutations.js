@@ -1,12 +1,12 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createClass = /* GraphQL */ `
-  mutation CreateClass(
-    $input: CreateClassInput!
-    $condition: ModelClassConditionInput
+export const createCourse = /* GraphQL */ `
+  mutation CreateCourse(
+    $input: CreateCourseInput!
+    $condition: ModelCourseConditionInput
   ) {
-    createClass(input: $input, condition: $condition) {
+    createCourse(input: $input, condition: $condition) {
       id
       name
       registrations {
@@ -27,12 +27,12 @@ export const createClass = /* GraphQL */ `
     }
   }
 `;
-export const updateClass = /* GraphQL */ `
-  mutation UpdateClass(
-    $input: UpdateClassInput!
-    $condition: ModelClassConditionInput
+export const updateCourse = /* GraphQL */ `
+  mutation UpdateCourse(
+    $input: UpdateCourseInput!
+    $condition: ModelCourseConditionInput
   ) {
-    updateClass(input: $input, condition: $condition) {
+    updateCourse(input: $input, condition: $condition) {
       id
       name
       registrations {
@@ -53,12 +53,12 @@ export const updateClass = /* GraphQL */ `
     }
   }
 `;
-export const deleteClass = /* GraphQL */ `
-  mutation DeleteClass(
-    $input: DeleteClassInput!
-    $condition: ModelClassConditionInput
+export const deleteCourse = /* GraphQL */ `
+  mutation DeleteCourse(
+    $input: DeleteCourseInput!
+    $condition: ModelCourseConditionInput
   ) {
-    deleteClass(input: $input, condition: $condition) {
+    deleteCourse(input: $input, condition: $condition) {
       id
       name
       registrations {
