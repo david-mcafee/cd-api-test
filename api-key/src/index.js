@@ -6,8 +6,13 @@ import reportWebVitals from "./reportWebVitals";
 import "semantic-ui-css/semantic.min.css";
 
 import Amplify from "aws-amplify";
-import awsExports from "./aws-exports";
-Amplify.configure(awsExports);
+
+Amplify.configure({
+  aws_appsync_graphqlEndpoint: "https://cd1-test.iibup.com/graphql/",
+  aws_appsync_region: "us-west-2",
+  aws_appsync_authenticationType: "API_KEY",
+  aws_appsync_apiKey: "da2-tqvyyobl7fbaxg76qo44sv4jwy",
+});
 
 ReactDOM.render(
   <React.StrictMode>

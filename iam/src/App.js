@@ -13,7 +13,8 @@ import {
   ListHeader,
 } from "semantic-ui-react";
 import { useStyles } from "./styles";
-import { withAuthenticator } from "@aws-amplify/ui-react";
+import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
+import { Auth } from "aws-amplify";
 
 const initialCourseState = [];
 const initialFormState = { name: "" };
@@ -52,7 +53,6 @@ const App = () => {
       const courses = await API.graphql({
         query: allCourses,
         variables: { semester: "SPRING2021" },
-        authMode: "AWS_IAM",
       });
       console.log(courses);
       setCourses(courses?.data?.allCourses);
@@ -77,7 +77,6 @@ const App = () => {
       const result = await API.graphql({
         mutation: register,
         variables: { id: id, name: formState?.name },
-        authMode: "AWS_IAM",
       });
 
       console.log("API result: ", result);
@@ -87,7 +86,7 @@ const App = () => {
   }
 
   const onRegister = /* GraphQL */ `
-    subscription onRegister {
+    subscription onRegister @aws_iam {
       onRegister {
         id
         registrations {
@@ -128,6 +127,7 @@ const App = () => {
   return (
     <div className={parentContainer}>
       <div className={container}>
+        <AmplifySignOut />
         <Header as="h1" icon textAlign="center">
           <Icon name="users" circular />
           <Header.Content>CD test / API key</Header.Content>

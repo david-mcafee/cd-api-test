@@ -10,11 +10,6 @@
       "StackName": "amplify-cdapitestiam-dev-162546",
       "StackId": "arn:aws:cloudformation:us-west-2:055345086115:stack/amplify-cdapitestiam-dev-162546/8c227490-3dc6-11ec-a497-0a449d0be91d",
       "AmplifyAppId": "d3q3rwfo4wnj35"
-    },
-    "categories": {
-      "auth": {
-        "cdapitestiam89842f72": {}
-      }
     }
   }
 }
