@@ -46,7 +46,7 @@ Amplify.configure({
     // OPTIONAL - Manually set the authentication flow type. Default is 'USER_SRP_AUTH'
     authenticationFlowType: "USER_SRP_AUTH",
   },
-  aws_appsync_graphqlEndpoint: "https://cd1-test.iibup.com/graphql/",
+  aws_appsync_graphqlEndpoint: "https://cd1-test.iibup.com/graphql",
   aws_appsync_region: "us-west-2",
   aws_appsync_authenticationType: "AWS_IAM",
 });
