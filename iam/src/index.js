@@ -13,7 +13,7 @@ Amplify.configure({
     identityPoolId: "us-east-2:26d25740-75f5-46b0-b753-c7c1ee377fb2",
 
     // REQUIRED - Amazon Cognito Region
-    region: "us-west-2",
+    region: "us-east-2",
 
     // OPTIONAL - Amazon Cognito Federated Identity Pool Region
     // Required only if it's different from Amazon Cognito Region
@@ -24,6 +24,24 @@ Amplify.configure({
 
     // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
     userPoolWebClientId: "56v9m70ptvt5p97i7auna1p3el",
+
+    mandatorySignIn: true,
+
+    // OPTIONAL - Configuration for cookie storage
+    // Note: if the secure flag is set to true, then the cookie transmission requires a secure protocol
+    cookieStorage: {
+      // REQUIRED - Cookie domain (only required if cookieStorage is provided)
+      domain: "localhost",
+      // OPTIONAL - Cookie path
+      path: "/",
+      // OPTIONAL - Cookie expiration in days
+      expires: 365,
+      // OPTIONAL - See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+      sameSite: "lax",
+      // OPTIONAL - Cookie secure flag
+      // Either true or false, indicating if the cookie transmission requires a secure protocol (https).
+      secure: false,
+    },
 
     // OPTIONAL - Manually set the authentication flow type. Default is 'USER_SRP_AUTH'
     authenticationFlowType: "USER_SRP_AUTH",

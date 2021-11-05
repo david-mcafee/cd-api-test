@@ -14,7 +14,6 @@ import {
 } from "semantic-ui-react";
 import { useStyles } from "./styles";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
-import { Auth } from "aws-amplify";
 
 const initialCourseState = [];
 const initialFormState = { name: "" };
