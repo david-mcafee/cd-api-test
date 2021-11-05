@@ -13,6 +13,7 @@ import {
   ListHeader,
 } from "semantic-ui-react";
 import { useStyles } from "./styles";
+import { withAuthenticator } from "@aws-amplify/ui-react";
 
 const initialCourseState = [];
 const initialFormState = { name: "" };
@@ -170,4 +171,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withAuthenticator(App);
