@@ -49,10 +49,9 @@ const App = () => {
 
   async function fetchCourses() {
     try {
-      const courses = await API.graphql({
-        query: allCourses,
-        variables: { semester: "SPRING2021" },
-      });
+      const courses = await API.graphql(
+        graphqlOperation(allCourses, { semester: "SPRING2021" })
+      );
       console.log(courses);
       setCourses(courses?.data?.allCourses);
     } catch (error) {
@@ -74,8 +73,9 @@ const App = () => {
       if (!formState.name) return;
 
       const result = await API.graphql({
-        mutation: register,
+        query: register,
         variables: { id: id, name: formState?.name },
+        authMode: "AWS_IAM",
       });
 
       console.log("API result: ", result);
@@ -85,7 +85,7 @@ const App = () => {
   }
 
   const onRegister = /* GraphQL */ `
-    subscription onRegister @aws_iam {
+    subscription onRegister {
       onRegister {
         id
         registrations {
@@ -98,7 +98,6 @@ const App = () => {
     }
   `;
 
-  // Subscribe to `register` updates
   useEffect(() => {
     const subscription = API.graphql(graphqlOperation(onRegister)).subscribe({
       next: (registrationData) => {

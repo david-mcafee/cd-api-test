@@ -71,9 +71,11 @@ const App = () => {
     try {
       if (!formState.name) return;
 
-      const result = await API.graphql(
-        graphqlOperation(register, { id: id, name: formState?.name })
-      );
+      const result = await API.graphql({
+        query: register,
+        variables: { id: id, name: formState?.name },
+        authMode: "AWS_IAM",
+      });
 
       console.log("API result: ", result);
     } catch (error) {
