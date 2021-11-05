@@ -128,7 +128,7 @@ const App = () => {
         <AmplifySignOut />
         <Header as="h1" icon textAlign="center">
           <Icon name="users" circular />
-          <Header.Content>CD test / IAM</Header.Content>
+          <Header.Content>CD test / Cognito</Header.Content>
           <Header sub>
             Subscriptions not yet implemented, refresh for updates
           </Header>
