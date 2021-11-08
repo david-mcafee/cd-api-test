@@ -49,9 +49,11 @@ const App = () => {
 
   async function fetchCourses() {
     try {
-      const courses = await API.graphql(
-        graphqlOperation(allCourses, { semester: "SPRING2021" })
-      );
+      const courses = await API.graphql({
+        query: allCourses,
+        variables: { semester: "SPRING2021" },
+        authMode: "AWS_IAM",
+      });
       console.log(courses);
       setCourses(courses?.data?.allCourses);
     } catch (error) {
