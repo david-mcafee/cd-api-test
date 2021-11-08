@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { API } from "aws-amplify";
+import { Auth, API, graphqlOperation } from "aws-amplify";
 // import { deleteCourse } from "../src/graphql/mutations";
 import {
   Button,
@@ -14,10 +14,20 @@ import {
 } from "semantic-ui-react";
 import { useStyles } from "./styles";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
-import { lambdaAuthToken } from "./lambdaAuthToken";
+
+// To derive necessary data from the provider
+// const {
+//   token, // the token you get from the provider
+//   domainOrProviderName, // Either the domain of the provider(e.g. accounts.your-openid-provider.com) or the provider name, for now the library only supports 'google', 'facebook', 'amazon', 'developer'
+//   expiresIn, // the time in ms which describes how long the token could live
+//   user, // the user object you defined, e.g. { username, email, phone_number }
+//   identity_id, // Optional, the identity id specified by the provider
+// } = getFromProvider(); // arbitrary function
 
 const initialCourseState = [];
 const initialFormState = { name: "" };
+
+let token = "";
 
 const App = () => {
   const [courses, setCourses] = useState(initialCourseState);
@@ -25,8 +35,20 @@ const App = () => {
 
   const { container, parentContainer } = useStyles();
 
+  const test = async () => {
+    await await Auth.currentAuthenticatedUser()
+      .then((cred) => {
+        token = cred?.signInUserSession?.idToken?.jwtToken;
+        debugger;
+      })
+      .then(() => {
+        fetchCourses();
+      });
+  };
+
   useEffect(() => {
-    fetchCourses();
+    test();
+    // fetchCourses();
   }, []);
 
   function setInput(key, value) {
@@ -49,12 +71,13 @@ const App = () => {
   `;
 
   async function fetchCourses() {
+    debugger;
     try {
       const courses = await API.graphql({
         query: allCourses,
         variables: { semester: "SPRING2021" },
-        authMode: "AWS_LAMBDA",
-        authToken: lambdaAuthToken,
+        authMode: "OPENID_CONNECT",
+        authToken: token,
       });
       console.log(courses);
       setCourses(courses?.data?.allCourses);
@@ -79,8 +102,8 @@ const App = () => {
       const result = await API.graphql({
         query: register,
         variables: { id: id, name: formState?.name },
-        authMode: "AWS_LAMBDA",
-        authToken: lambdaAuthToken,
+        authMode: "OPENID_CONNECT",
+        authToken: token,
       });
 
       console.log("API result: ", result);
@@ -104,11 +127,7 @@ const App = () => {
   `;
 
   useEffect(() => {
-    const subscription = API.graphql({
-      query: onRegister,
-      authMode: "AWS_LAMBDA",
-      authToken: lambdaAuthToken,
-    }).subscribe({
+    const subscription = API.graphql(graphqlOperation(onRegister)).subscribe({
       next: (registrationData) => {
         console.log("Subscription data: ", registrationData);
       },
@@ -133,11 +152,12 @@ const App = () => {
 
   return (
     <div className={parentContainer}>
+      <AmplifySignOut />
       <div className={container}>
-        <AmplifySignOut />
+        {/* <AmplifySignOut /> */}
         <Header as="h1" icon textAlign="center">
           <Icon name="users" circular />
-          <Header.Content>CD test / Lambda</Header.Content>
+          <Header.Content>CD test / OIDC</Header.Content>
           <Header sub>
             Subscriptions not yet implemented, refresh for updates
           </Header>
@@ -179,3 +199,4 @@ const App = () => {
 };
 
 export default withAuthenticator(App);
+// export default App;
