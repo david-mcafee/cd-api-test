@@ -48,7 +48,7 @@ Amplify.configure({
   },
   aws_appsync_graphqlEndpoint: "https://cd1-test.iibup.com/graphql",
   aws_appsync_region: "us-west-2",
-  aws_appsync_authenticationType: "AWS_IAM",
+  aws_appsync_authenticationType: "AMAZON_COGNITO_USER_POOLS",
 });
 
 ReactDOM.render(

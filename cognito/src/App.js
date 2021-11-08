@@ -75,7 +75,7 @@ const App = () => {
       const result = await API.graphql({
         query: register,
         variables: { id: id, name: formState?.name },
-        authMode: "AWS_IAM",
+        authMode: "AMAZON_COGNITO_USER_POOLS",
       });
 
       console.log("API result: ", result);
