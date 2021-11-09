@@ -22,6 +22,7 @@ const initialFormState = { name: "" };
 const App = () => {
   const [courses, setCourses] = useState(initialCourseState);
   const [formState, setFormState] = useState(initialFormState);
+  const [subscriptionDataMessage, setSubscriptionDataMessage] = useState("");
 
   const { container, parentContainer } = useStyles();
 
@@ -111,6 +112,7 @@ const App = () => {
     }).subscribe({
       next: (registrationData) => {
         console.log("Subscription data: ", registrationData);
+        setSubscriptionDataMessage("Sub data received!");
       },
       error: (error) => {
         console.log(error);
@@ -138,9 +140,7 @@ const App = () => {
         <Header as="h1" icon textAlign="center">
           <Icon name="users" circular />
           <Header.Content>CD test / Lambda</Header.Content>
-          <Header sub>
-            Subscriptions not yet implemented, refresh for updates
-          </Header>
+          <Header sub>{subscriptionDataMessage}</Header>
         </Header>
         <Input
           onChange={(event) => setInput("name", event.target.value)}
