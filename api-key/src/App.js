@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { API, graphqlOperation } from "aws-amplify";
-import { deleteCourse } from "../src/graphql/mutations";
 import {
   Button,
   Header,
@@ -13,6 +12,7 @@ import {
   ListHeader,
 } from "semantic-ui-react";
 import { useStyles } from "./styles";
+import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 
 const initialCourseState = [];
 const initialFormState = { name: "" };
@@ -113,16 +113,6 @@ const App = () => {
     return subscription.unsubscribe;
   }, []);
 
-  async function removeCourse(courseItem) {
-    try {
-      await API.graphql(
-        graphqlOperation(deleteCourse, { input: { id: courseItem.id } })
-      );
-    } catch (error) {
-      console.log("error deleting a course", error);
-    }
-  }
-
   return (
     <div className={parentContainer}>
       <div className={container}>
@@ -131,6 +121,7 @@ const App = () => {
           <Header.Content>CD test / API key</Header.Content>
           <Header sub>{subscriptionDataMessage}</Header>
         </Header>
+        <AmplifySignOut />
         <Input
           onChange={(event) => setInput("name", event.target.value)}
           value={formState.name}
@@ -139,11 +130,6 @@ const App = () => {
         <List>
           {courses.map((courseItem) => (
             <ListItem key={courseItem.id}>
-              <ListContent floated="right">
-                <Button onClick={() => removeCourse(courseItem)} icon circular>
-                  <Icon name="delete" color="red" />
-                </Button>
-              </ListContent>
               <ListContent>
                 <ListHeader>
                   <p>{courseItem.name}</p>
@@ -167,4 +153,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withAuthenticator(App);

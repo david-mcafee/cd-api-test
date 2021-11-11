@@ -10,4 +10,4 @@
 
 - yarn && yarn build
 - npx lerna exec --scope @aws-amplify/pubsub yarn build:esm:watch
-- cp -r packages/pubsub/lib-esm /Users/{username}/workspace/cd-api-test/iam/node_modules/@aws-amplify/pubsub/
+- cp -r packages/pubsub/lib-esm /Users/mcafd/workplace/cd-api-test/iam/node_modules/@aws-amplify/pubsub/
